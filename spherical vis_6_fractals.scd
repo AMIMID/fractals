@@ -21,9 +21,9 @@ z=Complex(0,0);
 
 
 (
-var  sph1,sph2,sph3,sph4,sph5,m_x=2,m_y=2,m_z=2;
+var  sph1,sph2,sph3,sph4,sph5,m_x=1,m_y=2,m_z=3;
 var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,mag,mag_x,mag_y,mag_z;
-var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0;
+var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
 
 ~az = (360*100).collect{
 	pl1=pl1+1;
@@ -48,12 +48,12 @@ var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0;
 	};
 
 ~magx = (360*100).collect{
-
+pl3=pl3+1;
 	az3=(az3+(1)).wrap(180.neg,180);
 
 	el3=(el3+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph3=Spherical(500,az3.degrad,el3.degrad);
+	sph3=Spherical(500,az3.degrad*~j.[pl3],el3.degrad*~j.[pl3]);
 
 	mag=Complex(sph3.x,sph3.x).rho.round(0.00001);////0 and 1st order only x,y,z
 	mag_x=(Complex(cos((sph3.theta.round(0.00001)*m_x).wrap(pi.neg,pi)),cos((sph3.theta.round(0.00001)*m_x).wrap(pi.neg,pi))).rho*
@@ -69,12 +69,12 @@ var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0;
 };
 
 ~magy = (360*100).collect{
-
+pl4=pl4+1;
 	az4=(az4+(1)).wrap(180.neg,180);
 
 	el4=(el4+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph4=Spherical(500,az4.degrad,el4.degrad);
+	sph4=Spherical(500,az4.degrad*~j.[pl4],el4.degrad*~j.[pl4]);
 
 	mag_y=(Complex(sin((sph4.theta.round(0.00001)*m_y).wrap(pi.neg,pi)),
 		sin((sph4.theta.round(0.00001)*m_y).wrap(pi.neg,pi))).rho*
@@ -88,12 +88,12 @@ var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0;
 };
 
 ~magz = (360*100).collect{
-
+pl5=pl5+1;
 	az5=(az5+(1)).wrap(180.neg,180);
 
 	el5=(el5+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph5=Spherical(500,az5.degrad,el5.degrad);
+	sph5=Spherical(500,az5.degrad*~j.[pl5],el5.degrad*~j.[pl5]);
 
 if(
 m_z.even,
@@ -267,4 +267,50 @@ Slider(w, Rect(920, 10, 10, 450)).action_{|me|
     a.rotZ = me.value * 2pi;
     w.refresh;
 };
+)
+
+//////////////////animation
+
+(
+var data;
+var az=0,el=0;
+var m=600,sph,az1,el1,pl=0,daz,del,harm,mag,r;
+var r1,harm1,r2,harm2,rad;
+var run = true;
+var ot=0.degrad;
+
+data = (360*16).collect{
+
+	az=~az.[pl];
+	el=~el.[pl];
+	//mag=~magz.[pl];
+	mag=Cartesian(~magx.[pl]/(2.sqrt),~magy.[pl]/(2.sqrt),~magz.[pl]/(2.sqrt)).rho/(2.sqrt);
+	pl=pl+1;
+
+	sph=Spherical(mag,az,el).asCartesian.asArray;
+
+
+};
+
+w = Window.new("3D Scatterplot", Rect(40,40, 800, 800)).front;
+
+~v = UserView.new(w,Rect(0,0,800,800)).background_(Color.black);
+a = ScatterView3d(~v, Rect(0,0, 800,800), data, [-1000, 1000].asSpec,[-1000, 1000].asSpec,[-1000, 1000].asSpec);
+a.drawMethod = \fillRect;
+a.symbolSize = 1;
+a.symbolColor = Color.white;
+a.background = Color.black;
+
+~v.animate;
+~v.drawFunc ={
+Pen.translate(400,400);
+
+		a.rot(ot,ot,ot);
+    ~v.refresh;
+
+		ot=ot+1.degrad;
+
+};
+{ while { run } {~v.background_(Color.black); ~v.refresh; (1/1000).wait } }.fork(AppClock);
+
 )

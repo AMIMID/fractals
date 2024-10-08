@@ -4,7 +4,7 @@
 s.options.numWireBufs = 1024*16;
 s.options.numOutputBusChannels=4;
 s.options.numInputBusChannels=0;
-TempoClock.default.tempo_(120/160);
+TempoClock.default.tempo_(120/180);
 s.options.memSize = 8192*64;
 //s.options.blockSize = 64/4;
 s.options.maxNodes = 1024 * 64;
@@ -91,6 +91,29 @@ z=Complex(0,0);
 	c=~c.[4];
 	z=z.pow(2)+c;
 	z.theta.round(0.000001);
+
+}
+
+)
+
+(
+var c,angle=0,c_real,c_imag,z;
+
+
+
+~k = 5.collect{
+ 	c_real=exp(Complex(0,1)*angle.degrad).real;
+	c_imag=exp(Complex(0,1)*angle.degrad).imag;
+ 	angle=(angle+45).wrap(0,360);
+ 	c=Complex(c_real,c_imag);
+ };
+z=Complex(0,0);
+
+~h = (180*~time).collect{
+	c=~k.[4].round(0.00001);
+	z=z.pow(2)+c;
+	z.theta.round(0.000001);
+
 }
 
 )
@@ -107,7 +130,7 @@ pl1=pl1+1;
 
 	el1=(el1+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph1=Spherical(1,az1.degrad*~j.[pl1],el1.degrad*~j.[pl1]).theta.round(0.00001);
+	sph1=Spherical(1,az1.degrad*~h.[pl1],el1.degrad*~j.[pl1]).theta.round(0.00001);
 
 	};
 
@@ -117,7 +140,7 @@ pl2=pl2+1;
 
 	el2=(el2+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph2=Spherical(1,az2.degrad*~j.[pl2],el2.degrad*~j.[pl2]).phi.round(0.00001);
+	sph2=Spherical(1,az2.degrad*~h.[pl2],el2.degrad*~j.[pl2]).phi.round(0.00001);
 
 	};
 
@@ -127,7 +150,7 @@ pl3=pl3+1;
 
 	elx=(elx+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sphx=Spherical(rad,azx.degrad*~j.[pl3],elx.degrad*~j.[pl3]);
+	sphx=Spherical(rad,azx.degrad*~h.[pl3],elx.degrad*~j.[pl3]);
 
 	/*mag_x=(Complex(cos((sphx.theta.round(0.00001)*m_x).wrap(pi.neg,pi)),cos((sphx.theta.round(0.00001)*m_x).wrap(pi.neg,pi))).rho*
 	Complex(cos((sphx.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))),cos((sphx.phi.round(0.00001)).wrap((pi/2).neg,(pi/2)))).rho)*sphx.rho;
@@ -145,7 +168,7 @@ pl4=pl4+1;
 
 	ely=(ely+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sphy=Spherical(rad,azy.degrad*~j.[pl4],ely.degrad*~j.[pl4]);
+	sphy=Spherical(rad,azy.degrad*~h.[pl4],ely.degrad*~j.[pl4]);
 
 	mag_y=(Complex(sin((sphy.theta.round(0.00001)*m_y).wrap(pi.neg,pi)),sin((sphy.theta.round(0.00001)*m_y).wrap(pi.neg,pi))).rho*
 		Complex(cos((sphy.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))),cos((sphy.phi.round(0.00001)).wrap((pi/2).neg,(pi/2)))).rho)*sphy.rho;
@@ -162,7 +185,7 @@ pl5=pl5+1;
 
 	elz=(elz+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sphz=Spherical(rad,azz.degrad*~j.[pl5],elz.degrad*~j.[pl5]);
+	sphz=Spherical(rad,azz.degrad*~h.[pl5],elz.degrad*~j.[pl5]);
 
 if(
 m_z.even,
@@ -419,8 +442,8 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
-//wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
-Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
+wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
+//Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};
 }).add;
 );
@@ -459,8 +482,8 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
-//wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
-Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
+wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
+//Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};
 }).add;
 );
@@ -498,8 +521,8 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
-//wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
-Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
+wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
+//Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};
 }).add;
 )
@@ -578,7 +601,7 @@ f.play;
 g.play;
 s.record(numChannels:4,duration:90)
 
-TempoClock.default.tempo_(120/160)
+TempoClock.default.tempo_(120/120)
 
 );
 

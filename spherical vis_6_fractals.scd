@@ -1,3 +1,5 @@
+////////////fractals
+
 (
 var c,angle=0,c_real,c_imag,z;
 
@@ -11,7 +13,7 @@ var c,angle=0,c_real,c_imag,z;
  };
 z=Complex(0,0);
 
-~j = (360*100*2).collect{
+~j = (360*200).collect{
 	c=~c.[4];
 	z=z.pow(2)+c;
 	z.theta.round(0.000001);
@@ -19,9 +21,31 @@ z=Complex(0,0);
 
 )
 
-
 (
-var  sph1,sph2,sph3,sph4,sph5,m_x=1,m_y=2,m_z=3;
+var c,angle=0,c_real,c_imag,z;
+
+
+
+~k = 5.collect{
+ 	c_real=exp(Complex(0,1)*angle.degrad).real;
+	c_imag=exp(Complex(0,1)*angle.degrad).imag;
+ 	angle=(angle+45).wrap(0,360);
+ 	c=Complex(c_real,c_imag);
+ };
+z=Complex(0,0);
+
+~h = (360*200).collect{
+	c=~k.[4].round(0.00001);
+	z=z.pow(2)+c;
+	z.theta.round(0.000001);
+
+}
+
+)
+
+////////////////////az el mag arrays
+(
+var  sph1,sph2,sph3,sph4,sph5,m_x=2,m_y=2,m_z=2;
 var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,mag,mag_x,mag_y,mag_z;
 var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
 
@@ -32,7 +56,7 @@ var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
 
 	el1=(el1+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph1=Spherical(1,az1.degrad*~j.[pl1],el1.degrad*~j.[pl1]).theta.round(0.00001);
+	sph1=Spherical(1,az1.degrad*~h.[pl1],el1.degrad*~j.[pl1]).theta.round(0.00001);
 
 	};
 
@@ -43,7 +67,7 @@ var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
 
 	el2=(el2+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph2=Spherical(1,az2.degrad*~j.[pl2],el2.degrad*~j.[pl2]).phi.round(0.00001);
+	sph2=Spherical(1,az2.degrad*~h.[pl2],el2.degrad*~j.[pl2]).phi.round(0.00001);
 
 	};
 
@@ -53,7 +77,7 @@ pl3=pl3+1;
 
 	el3=(el3+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph3=Spherical(500,az3.degrad*~j.[pl3],el3.degrad*~j.[pl3]);
+	sph3=Spherical(500,az3.degrad*~h.[pl3],el3.degrad*~j.[pl3]);
 
 	mag=Complex(sph3.x,sph3.x).rho.round(0.00001);////0 and 1st order only x,y,z
 	mag_x=(Complex(cos((sph3.theta.round(0.00001)*m_x).wrap(pi.neg,pi)),cos((sph3.theta.round(0.00001)*m_x).wrap(pi.neg,pi))).rho*
@@ -74,7 +98,7 @@ pl4=pl4+1;
 
 	el4=(el4+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph4=Spherical(500,az4.degrad*~j.[pl4],el4.degrad*~j.[pl4]);
+	sph4=Spherical(500,az4.degrad*~h.[pl4],el4.degrad*~j.[pl4]);
 
 	mag_y=(Complex(sin((sph4.theta.round(0.00001)*m_y).wrap(pi.neg,pi)),
 		sin((sph4.theta.round(0.00001)*m_y).wrap(pi.neg,pi))).rho*
@@ -93,7 +117,7 @@ pl5=pl5+1;
 
 	el5=(el5+(360-(360/1.6180339887499))).wrap(90.neg,90);
 
-	sph5=Spherical(500,az5.degrad*~j.[pl5],el5.degrad*~j.[pl5]);
+	sph5=Spherical(500,az5.degrad*~h.[pl5],el5.degrad*~j.[pl5]);
 
 if(
 m_z.even,

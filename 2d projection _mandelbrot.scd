@@ -18,7 +18,27 @@ z=Complex(0,0);
 }
 
 )
+(
+var c,angle=0,c_real,c_imag,z;
 
+
+
+~k = 5.collect{
+ 	c_real=exp(Complex(0,1)*angle.degrad).real;
+	c_imag=exp(Complex(0,1)*angle.degrad).imag;
+ 	angle=(angle+45).wrap(0,360);
+ 	c=Complex(c_real,c_imag);
+ };
+z=Complex(0,0);
+
+~h = (360*200).collect{
+	c=~k.[4].round(0.00001);
+	z=z.pow(2)+c;
+	z.theta.round(0.000001);
+
+}
+
+)
 
 (
 var phase,angle=0,phase1,angle1=90,pl1=0,pl2=0;
@@ -40,7 +60,7 @@ var phase,angle=0,phase1,angle1=90,pl1=0,pl2=0;
 
 )
 (
-var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m=4,pl1=0,pl2=0;
 
 ~magL = (360*64).collect{
 
@@ -62,11 +82,12 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 )
 
 (
-var c,angle=0,c_real,c_imag,z;
+var c,angle=0,c_real,c_imag,z,pl=0;
 
 ~az = (360*64).collect{
- 	c_real=exp(Complex(0,1)*angle.degrad).real;
-	c_imag=exp(Complex(0,1)*angle.degrad).imag;
+ 	c_real=exp(Complex(0,1)*(angle.degrad*~h.[pl])).real;
+	c_imag=exp(Complex(0,1)*(angle.degrad*~h.[pl])).imag;
+	pl=pl+1;
  	angle=(angle+1).wrap(0,360);
  	c=Complex(c_real,c_imag).theta;
  };
@@ -83,7 +104,7 @@ var r1,harm1,r2,harm2,rad,sph1;
 
 data = (360*32).collect{
 
-	az=~phase1.[pl];
+	az=~az.[pl];
 	//el=~el.[pl];
 	mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 	pl=pl+1;

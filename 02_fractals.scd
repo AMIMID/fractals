@@ -26,7 +26,7 @@ env = Env(~levels,[1]);
 sig=env.asSignal(1024);
 wt = sig.asWavetable;
 ~b.loadCollection(wt);
-sig.plot;
+//sig.plot;
 )
 
 ////////fractal
@@ -134,11 +134,11 @@ var chainx,chainy;
 		ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
 		ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
 
-env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
-env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
+//env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
+//env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-		signal1=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph1,m.reciprocal),fund*16,env1);
-		signal2=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph2,m.reciprocal),fund*16,env2);
+		signal1=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph1,m.reciprocal),fund*16,SinOsc.ar(1,mul:0.1));
+		signal2=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph2,m.reciprocal),fund*16,SinOsc.ar(1,mul:0.1));
 
 	m=m+1;
 

@@ -410,7 +410,7 @@ var ang=0,level,levels,env,pl;
 (
 (
 SynthDef.new(\ob, {
-	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
+	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0,plf=0;
 	var phase,scale=4,osc,sphere,mag_o;
 	var freq,m=1,bank,pitch=1,fund=110, angle=0,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
@@ -423,7 +423,7 @@ pitch=2.pow(n1/(2*6));
 freq=(fund*scale)*pitch;
 
 bank.do{
-phase=exp(Complex(0,1)*angle.degrad).theta;
+		phase=exp(Complex(0,1)*(angle.degrad*~j.[plf])).theta;
 angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 
 		mag_o=Cartesian(Select.kr(pl,~magx)/(2.sqrt),Select.kr(pl,~magy)/(2.sqrt),Select.kr(pl,~magz)/(2.sqrt)).rho/(2.sqrt);
@@ -442,6 +442,7 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
+pfl=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};
@@ -450,7 +451,7 @@ wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
 
 (
 SynthDef.new(\oc, {
-	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
+	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0,plf=0;
 	var phase,scale=4,osc,sphere,mag_o;
 	var freq,m=1,bank,pitch=1,fund=110, angle=0,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
@@ -463,7 +464,7 @@ pitch=2.pow(n1/(2*6));
 freq=(fund*scale)*pitch;
 
 bank.do{
-phase=exp(Complex(0,1)*angle.degrad).theta;
+		phase=exp(Complex(0,1)*(angle.degrad*~j.[plf])).theta;
 angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 
 		mag_o=Cartesian(Select.kr(pl,~magx)/(2.sqrt),Select.kr(pl,~magy)/(2.sqrt),Select.kr(pl,~magz)/(2.sqrt)).rho/(2.sqrt);
@@ -482,6 +483,7 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
+pfl=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};
@@ -489,7 +491,7 @@ wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
 );
 (
 SynthDef.new(\od, {
-	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
+	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0,plf=0;
 	var phase,scale=4,osc,sphere,mag_o;
 	var freq,m=1,bank,pitch=1,fund=110, angle=0,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
@@ -502,7 +504,7 @@ pitch=2.pow(n1/(2*6));
 freq=(fund*scale)*pitch;
 
 bank.do{
-phase=exp(Complex(0,1)*angle.degrad).theta;
+		phase=exp(Complex(0,1)*(angle.degrad*~j.[plf])).theta;
 angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 
 		mag_o=Cartesian(Select.kr(pl,~magx)/(2.sqrt),Select.kr(pl,~magy)/(2.sqrt),Select.kr(pl,~magz)/(2.sqrt)).rho/(2.sqrt);
@@ -521,6 +523,7 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
+pfl=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};

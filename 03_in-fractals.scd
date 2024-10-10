@@ -138,8 +138,8 @@ var frames= 2048;
 		//phase2=~phase2.[pl];
 		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
-ph1=mg.linlin(0,2.sqrt,0,2pi)*90.degrad;
-		ph2=mg.linlin(0,2.sqrt,0,2pi)*0.degrad;
+ph1=exp(Complex(0,1)*mg.linlin(0,2.sqrt,0,2pi)*90.degrad).theta;
+		ph2=exp(Complex(0,1)*mg.linlin(0,2.sqrt,0,2pi)*0.degrad).theta;
 
 	//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 	//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);

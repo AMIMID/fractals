@@ -73,7 +73,7 @@ z=Complex(0,0);
 // )
 
 (
-var phase1,phase2,angle1=0,angle2=0,m=4,pl1=0,pl2=0;
+var phase1,phase2,angle1=0,angle2=0,m=2,pl1=0,pl2=0;
 
 ~posL=1440.collect{
 
@@ -95,7 +95,7 @@ var phase1,phase2,angle1=0,angle2=0,m=4,pl1=0,pl2=0;
 )
 
 (
-var phase,angle=0,mag,phase1,angle1=0,mag1,m=4,pl1=0,pl2=0;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 
 ~magL = 1440.collect{
 
@@ -127,23 +127,23 @@ var chainx,chainy,amp;
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
-		phase1=~phase1.[pl];
-		phase2=~phase2.[pl];
+		//phase1=~phase1.[pl];
+		//phase2=~phase2.[pl];
 			mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
 		//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
 
-		ph1=mag.linlin(0,2.sqrt,0,2pi)*90.degrad;
-		ph2=mag.linlin(0,2.sqrt,0,2pi)*0.degrad;
+		ph1=exp(Complex(0,1)*mag.linlin(0,2.sqrt,0,2pi)*90.degrad).theta;
+		ph2=exp(Complex(0,1)*mag.linlin(0,2.sqrt,0,2pi)*0.degrad).theta;
 
 		amp=m.reciprocal*mag.linlin(0,2.sqrt,0,1);
 		freq=fund*amp.reciprocal;
 //env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 //env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-		signal1=LPF.ar(Osc.ar(~b.bufnum,freq,ph1,m.reciprocal),fund*16);
-		signal2=LPF.ar(Osc.ar(~b.bufnum,freq,ph2,m.reciprocal),fund*16);
+		signal1=BPF.ar(Osc.ar(~b.bufnum,freq,ph1,m.reciprocal),440,0.1);
+		signal2=BPF.ar(Osc.ar(~b.bufnum,freq,ph2,m.reciprocal),440,0.1);
 
 	m=m+1;
 

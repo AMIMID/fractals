@@ -440,8 +440,8 @@ var ang=0,level,levels,env,pl;
 (
 (
 SynthDef.new(\ob, {
-	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
-	var phase,octave=2,osc,sphere,mag_o,amp,ton,ph,plf=0;
+	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0,plf=0;
+	var phase,octave=2,osc,sphere,mag_o,amp,ton,ph;
 	var freq,m=1,bank,pitch=1,fund=55, angle=360,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -484,8 +484,8 @@ wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
 
 (
 SynthDef.new(\oc, {
-	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
-	var phase,octave=2,osc,sphere,mag_o,amp,ton,ph,plf=0;
+	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0,plf=0;
+	var phase,octave=2,osc,sphere,mag_o,amp,ton,ph;
 	var freq,m=1,bank,pitch=1,fund=55, angle=360,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -527,8 +527,8 @@ wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
 );
 (
 SynthDef.new(\od, {
-	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
-	var phase,octave=2,osc,sphere,mag_o,amp,ton,ph,plf=0;
+	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0,plf=0;
+	var phase,octave=2,osc,sphere,mag_o,amp,ton,ph;
 	var freq,m=1,bank,pitch=1,fund=55, angle=360,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -640,7 +640,8 @@ e.play;
 s.record(numChannels:4,duration:45)
 f.play;
 s.record(numChannels:4,duration:45)
-.
+g.play;
+s.record(numChannels:4,duration:45)
 
 TempoClock.default.tempo_(120/120)
 

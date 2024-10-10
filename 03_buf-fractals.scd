@@ -146,7 +146,7 @@ var fund;
 		pos2=~posR.[pl]/(2.sqrt);
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-		mg=Complex(~magL.[pl]/(2sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
+		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
@@ -167,6 +167,7 @@ pl=pl+1;
 
 }
 }.play;
-//s.record;
+s.record;
 )
 
+(Complex(~magL.[0]/(2.sqrt),~magR.[0]/(2.sqrt)).rho/(2.sqrt)).postln;

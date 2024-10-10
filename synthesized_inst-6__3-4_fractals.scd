@@ -389,7 +389,7 @@ rythm=[1,1/2,1,1,1/2];
 );
 /////////////alternative notes and durs
 (
-var tempo=1/4,ph1,ph2,ph3,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0,pl6=0,sph1,sph2,sph3,n1,n2,n3,scale=6;
+var tempo=1/8,ph1,ph2,ph3,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0,pl6=0,sph1,sph2,sph3,n1,n2,n3,scale=6;
 var mag1,mag2,mag3,rythm,index1,index2,index3,pl7=0,pl8=0,pl9=0,t1,t2,t3;
 
 ////L-system algae variable a,b rules:a=ab b=a , n3 for n0=a
@@ -514,7 +514,7 @@ bank.do{
 
 		amp=m.reciprocal*mag_o*ton.reciprocal;
 		pitch=freq*amp.reciprocal;
-		phase=mag_o.linlin(0,2.sqrt,0,2pi)*ton.reciprocal;
+		phase=exp(Complex(0,1)*(mag_o.linlin(0,2.sqrt,0,2pi))).theta;
 
 sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az_x),Select.kr(pl,~el_x));
 //sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
@@ -527,7 +527,7 @@ LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:phase)),
 Osc.ar(~t.bufnum,sphere.rho,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 Osc.ar(~t.bufnum,sphere.rho,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
 		);
-m=m+2;
+m=m+1;
 pl=pl+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
@@ -554,7 +554,7 @@ bank.do{
 
 		amp=m.reciprocal*mag_o*ton.reciprocal;
 		pitch=freq*amp.reciprocal;
-		phase=mag_o.linlin(0,2.sqrt,0,2pi)*ton.reciprocal;
+		phase=exp(Complex(0,1)*(mag_o.linlin(0,2.sqrt,0,2pi))).theta;
 
 sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az_x),Select.kr(pl,~el_x));
 //sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
@@ -567,7 +567,7 @@ LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:phase)),
 Osc.ar(~t.bufnum,sphere.rho,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 Osc.ar(~t.bufnum,sphere.rho,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
 		);
-m=m+2;
+m=m+1;
 pl=pl+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
@@ -593,7 +593,7 @@ bank.do{
 
 		amp=m.reciprocal*mag_o*ton.reciprocal;
 		pitch=freq*amp.reciprocal;
-		phase=mag_o.linlin(0,2.sqrt,0,2pi)*ton.reciprocal;
+		phase=exp(Complex(0,1)*(mag_o.linlin(0,2.sqrt,0,2pi))).theta;
 
 sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az_x),Select.kr(pl,~el_x));
 //sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
@@ -606,7 +606,7 @@ LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:phase)),
 Osc.ar(~t.bufnum,sphere.rho,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 Osc.ar(~t.bufnum,sphere.rho,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
 		);
-m=m+2;
+m=m+1;
 pl=pl+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));

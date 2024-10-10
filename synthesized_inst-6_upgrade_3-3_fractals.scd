@@ -38,8 +38,8 @@ sig.plot;
 (
 var signal,wt,m=0,amp;
 
-~level=90.collect{m=m+1;amp=m.reciprocal};
-~phase=90.collect{pi};
+~level=180.collect{m=m+1;amp=m.reciprocal};
+~phase=180.collect{pi};
 signal=Signal.sineFill(1024,~level,~phase);
 
 wt = signal.asWavetable;
@@ -334,7 +334,8 @@ rel3=Cartesian(v3.b.round(0.0001),v3.c.round(0.0001),v3.d.round(0.0001)).phi.rou
 var dur=4,ph1,ph2,ph3,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0,pl6=0,sph1,sph2,sph3,n1,n2,n3,mult=8;
 var mag1,mag2,mag3,rythm,index1,index2,index3,pl7=0,pl8=0,pl9=0,t1,t2,t3;
 
-rythm=[2,1,1];
+////L-system algae variable a,b rules:a=ab b=a , n3 for n0=a
+rythm=[1,1/2,1,1,1/2];
 
 ~phase2 = (90*~time).collect{
 	ph1=~magx.[pl1]/(2.sqrt);
@@ -423,7 +424,7 @@ pitch=2.pow(n1/(2*6));
 freq=(fund*scale)*pitch;
 
 bank.do{
-		phase=exp(Complex(0,1)*(angle.degrad*Select.kr(plf,~j))).theta;
+		phase=exp(Complex(0,1)*(angle.degrad*~j.[plf])).theta;
 angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 
 		mag_o=Cartesian(Select.kr(pl,~magx)/(2.sqrt),Select.kr(pl,~magy)/(2.sqrt),Select.kr(pl,~magz)/(2.sqrt)).rho/(2.sqrt);
@@ -442,7 +443,7 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
-plf=plf+1;
+pfl=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};
@@ -464,7 +465,7 @@ pitch=2.pow(n1/(2*6));
 freq=(fund*scale)*pitch;
 
 bank.do{
-		phase=exp(Complex(0,1)*(angle.degrad*Select.kr(plf,~j))).theta;
+		phase=exp(Complex(0,1)*(angle.degrad*~j.[plf])).theta;
 angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 
 		mag_o=Cartesian(Select.kr(pl,~magx)/(2.sqrt),Select.kr(pl,~magy)/(2.sqrt),Select.kr(pl,~magz)/(2.sqrt)).rho/(2.sqrt);
@@ -483,7 +484,7 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
-plf=plf+1;
+pfl=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};
@@ -504,7 +505,7 @@ pitch=2.pow(n1/(2*6));
 freq=(fund*scale)*pitch;
 
 bank.do{
-		phase=exp(Complex(0,1)*(angle.degrad*Select.kr(plf,~j))).theta;
+		phase=exp(Complex(0,1)*(angle.degrad*~j.[plf])).theta;
 angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 
 		mag_o=Cartesian(Select.kr(pl,~magx)/(2.sqrt),Select.kr(pl,~magy)/(2.sqrt),Select.kr(pl,~magz)/(2.sqrt)).rho/(2.sqrt);
@@ -523,7 +524,7 @@ Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,
 		);
 m=m+1;
 pl=pl+1;
-plf=plf+1;
+pfl=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt))
 //Out.ar(0,LPF.ar(LeakDC.ar((osc)*env*0.1),cutt));
 	};

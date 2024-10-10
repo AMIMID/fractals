@@ -441,7 +441,7 @@ var ang=0,level,levels,env,pl;
 (
 SynthDef.new(\ob, {
 	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
-	var octave=2,osc,sphere,mag_o,amp,ton,plf=0,phase;
+	var octave=4,osc,sphere,mag_o,amp,ton,plf=0,phase;
 	var freq,m=1,bank,pitch=1,fund=55,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -481,7 +481,7 @@ wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
 (
 SynthDef.new(\oc, {
 	arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
-	var octave=2,osc,sphere,mag_o,amp,ton,phase;
+	var octave=4,osc,sphere,mag_o,amp,ton,phase;
 	var freq,m=1,bank,pitch=1,fund=55,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -520,7 +520,7 @@ wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
 (
 SynthDef.new(\od, {
 		arg  n1=1,cutt=440,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
-	var octave=2,osc,sphere,mag_o,amp,ton,phase;
+	var octave=4,osc,sphere,mag_o,amp,ton,phase;
 	var freq,m=1,bank,pitch=1,fund=55,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|

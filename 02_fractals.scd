@@ -135,7 +135,7 @@ var chainx,chainy,amp;
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
 
 		ph1=exp(Complex(0,1)*mag.linlin(0,2.sqrt,0,2pi)*90.degrad).theta;
-		ph2=exp(Complex(0,1)*mag.linlin(0,2.sqrt,0,2pi)*0.degrad).theta;
+		ph2=exp(Complex(0,1)*mag.linlin(0,2.sqrt,0,2pi)).theta;
 
 		amp=m.reciprocal*mag.linlin(0,2.sqrt,0,1);
 		freq=fund*amp.reciprocal;
@@ -145,7 +145,7 @@ var chainx,chainy,amp;
 		signal1=BPF.ar(Osc.ar(~b.bufnum,freq,ph1,m.reciprocal),440,0.1);
 		signal2=BPF.ar(Osc.ar(~b.bufnum,freq,ph2,m.reciprocal),440,0.1);
 
-	m=m+1;
+	m=m+2;
 
 pl=pl+1;
 

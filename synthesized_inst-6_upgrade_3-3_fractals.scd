@@ -197,7 +197,7 @@ mag_z=Complex(sin((sphz.phi.round(0.00001)*m_z).wrap((pi/2).neg,(pi/2))),sin((sp
 
 )
 
-////////////////////////az
+////////////////////////az///randomizer-difuser
 
 (
 var pl1=0,az1,el1,sph1,rot1,i1,j1,k1,q1,raz1,rel1;
@@ -399,10 +399,9 @@ var ang=0,level,levels,env,pl;
 ////perc
 (
 var ang=0,level,levels,env,pl;
-~levels=180.collect{ang=ang+1.degrad; level=exp(Complex(0,1)*ang).real;
-	//levels=level.rrand(exp(Complex(0,1)*ang.degrad).imag);
-};
-//env=Env(~levels,[8/180]);env.plot;
+~levels=90.collect{ level=exp(Complex(0,1)*ang).real; ang=ang+1.degrad;
+	levels=level.rrand(exp(Complex(0,1)*ang+((360/16)-((360/16)/1.6180339887499)).degrad).real);};
+//env=Env([0]++~levels,[8/180]);env.plot;
 )
 
 

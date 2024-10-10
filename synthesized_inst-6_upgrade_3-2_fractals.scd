@@ -197,7 +197,7 @@ mag_z=Complex(sin((sphz.phi.round(0.00001)*m_z).wrap((pi/2).neg,(pi/2))),sin((sp
 
 )
 
-////////////////////////az
+////////////////////////az// randomiser diffuser
 
 (
 var pl1=0,az1,el1,sph1,rot1,i1,j1,k1,q1,raz1,rel1;

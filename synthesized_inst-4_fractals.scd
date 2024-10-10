@@ -467,12 +467,12 @@ sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
 env=EnvGen.ar(Env(~levels*mag_o.round(0.00001),[decay/180]),doneAction:2,levelScale:ton.reciprocal);
 
 osc=VBAP.ar(4,
-LeakDC.ar(Osc.ar(~w.bufnum,(freq*m),mul:amp,phase:amp.linlin(0,1,0,2pi)*phase)),
+LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:m.reciprocal.linlin(0,1,0,2pi)*phase)),
 ~b.bufnum,
 Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
 		);
-m=m+1;
+m=m+2;
 pl=pl+1;
 plf=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
@@ -510,12 +510,12 @@ sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
 env=EnvGen.ar(Env(~levels*mag_o.round(0.00001),[decay/180]),doneAction:2,levelScale:ton.reciprocal);
 
 osc=VBAP.ar(4,
-LeakDC.ar(Osc.ar(~w.bufnum,(freq*m),mul:amp,phase:amp.linlin(0,1,0,2pi)*phase)),
+LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:m.reciprocal.linlin(0,1,0,2pi)*phase)),
 ~b.bufnum,
 Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
 		);
-m=m+1;
+m=m+2;
 pl=pl+1;
 plf=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))
@@ -552,12 +552,12 @@ sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
 env=EnvGen.ar(Env(~levels*mag_o.round(0.00001),[decay/180]),doneAction:2,levelScale:ton.reciprocal);
 
 osc=VBAP.ar(4,
-LeakDC.ar(Osc.ar(~w.bufnum,(freq*m),mul:amp,phase:amp.linlin(0,1,0,2pi)*phase)),
+LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:m.reciprocal.linlin(0,1,0,2pi)*phase)),
 ~b.bufnum,
 Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 Osc.ar(~t.bufnum,sphere.rho/2,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
 		);
-m=m+1;
+m=m+2;
 pl=pl+1;
 plf=plf+1;
 wrappedOut1.value(out,LPF.ar(LeakDC.ar((osc)*env),cutt))

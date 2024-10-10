@@ -387,7 +387,64 @@ rythm=[1,1/2,1,1,1/2];
 	};
 
 );
+/////////////alternative notes and durs
+(
+var tempo=1/4,ph1,ph2,ph3,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0,pl6=0,sph1,sph2,sph3,n1,n2,n3,scale=6;
+var mag1,mag2,mag3,rythm,index1,index2,index3,pl7=0,pl8=0,pl9=0,t1,t2,t3;
 
+////L-system algae variable a,b rules:a=ab b=a , n3 for n0=a
+rythm=[1,1/2,1,1,1/2];
+
+~phase2 = (90*~time).collect{
+	ph1=~magx.[pl1]/(2.sqrt);
+	index1=rythm.wrapAt(pl7);
+	pl7=pl7+1;
+	pl1=pl1+1;
+	ph1=(ph1.reciprocal*tempo).round(1/256);
+	t1=ph1*index1;
+
+	};
+
+~phase3 = (90*~time).collect{
+	ph2=~magy.[pl2]/(2.sqrt);
+	index2=rythm.wrapAt(pl8);
+	pl8=pl8+1;
+	pl2=pl2+1;
+	ph2=(ph2.reciprocal*tempo).round(1/256);
+	t2=ph2*index2;
+	};
+
+~phase4 = (90*~time).collect{
+	ph3=~magz.[pl3]/(2.sqrt);
+	index3=rythm.wrapAt(pl9);
+	pl9=pl9+1;
+	pl3=pl3+1;
+	ph3=(ph3.reciprocal*tempo).round((1/256));
+	t3=ph3*index3;
+	};
+
+~n2 = (90*~time).collect{
+	mag1=Cartesian(~magx[pl4]/(2.sqrt),~magy[pl4]/(2.sqrt),~magz[pl4]/(2.sqrt)).rho/(2.sqrt);
+	sph1=Spherical(mag1.reciprocal*scale,~az.[pl4],~el.[pl4]).x;
+	pl4=pl4+1;
+	n1=(sph1).round(1);
+	};
+
+~n3 = (90*~time).collect{
+	mag2=Cartesian(~magx[pl5]/(2.sqrt),~magy[pl5]/(2.sqrt),~magz[pl5]/(2.sqrt)).rho/(2.sqrt);
+	sph2=Spherical(mag2.reciprocal*scale,~az.[pl5],~el.[pl5]).y;
+	pl5=pl5+1;
+	n2=(sph2).round(1);
+	};
+
+~n4 = (90*~time).collect{
+	mag3=Cartesian(~magx[pl6]/(2.sqrt),~magy[pl6]/(2.sqrt),~magz[pl6]/(2.sqrt)).rho/(2.sqrt);
+	sph3=Spherical(mag3.reciprocal*scale,~az.[pl6],~el.[pl6]).z;
+	pl6=pl6+1;
+	n3=(sph3).round(1);
+	};
+
+)
 ///////////////////////////wt envelope sine levels
 (
 var ang=0,level,levels,env,pl;
@@ -627,6 +684,8 @@ d.play;
 e.play;
 //s.record(numChannels:4,duration:45)
 f.play;
+//s.record(numChannels:4,duration:45)
+g.play;
 s.record(numChannels:4,duration:60)
 .
 

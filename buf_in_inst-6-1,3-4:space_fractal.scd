@@ -569,10 +569,6 @@ SynthDef.new(\o1, {
 	chainy = FFT(LocalBuf(1024*2), in2);
 
    360.do{
-		phase1=exp(Complex(0,1)*angle1.degrad).theta;
-angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-			phase2=exp(Complex(0,1)*angle2.degrad).theta;
-angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
 
 		az1=~az_x.[pl];
 		el1=~el_x.[pl];
@@ -581,8 +577,12 @@ angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
 		amp1=(Cartesian(~magx.[pl]/(2.sqrt),~magy.[pl]/(2.sqrt),~magz.[pl]/(2.sqrt)).rho/(2.sqrt));
 		amp2=(Cartesian(~magx.reverse.[pl]/(2.sqrt),~magy.reverse.[pl]/(2.sqrt),~magz.reverse.[pl]/(2.sqrt)).rho/(2.sqrt));
 
-   chainxx = chainx.pvcollect(1024*2, {|mag, phase, index| [mag*amp1, exp(Complex(0,1)*(phase+SinOsc.ar(amp1.reciprocal,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-   chainyy = chainy.pvcollect(1024*2, {|mag, phase, index| [mag*amp2, exp(Complex(0,1)*(phase+SinOsc.ar(amp2.reciprocal,phase2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+		phase1=exp(Complex(0,1)*amp1.linlin(0,2.sqrt,0.2pi)*90.degrad).theta;
+		phase2=exp(Complex(0,1)*amp1.linlin(0,2.sqrt,0.2pi)).theta;
+
+
+   chainxx = chainx.pvcollect(1024*2, {|mag, phase, index| [mag*amp1, exp(Complex(0,1)*(phase+phase1).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+   chainyy = chainy.pvcollect(1024*2, {|mag, phase, index| [mag*amp2, exp(Complex(0,1)*(phase+phase2).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 	b=b+1;
 

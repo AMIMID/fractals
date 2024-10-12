@@ -4,7 +4,7 @@
 s.options.numWireBufs = 1024*16;
 s.options.numOutputBusChannels=4;
 s.options.numInputBusChannels=0;
-TempoClock.default.tempo_(120/180);
+TempoClock.default.tempo_(0.1);
 s.options.memSize = 8192*64;
 //s.options.blockSize = 64/4;
 s.options.maxNodes = 1024 * 64;
@@ -32,13 +32,13 @@ env = Env(~levels,[1]);
 sig=env.asSignal(1024);
 wt = sig.asWavetable;
 ~w.loadCollection(wt);
-sig.plot;
+//sig.plot;
 );
 
 (
 var signal,wt,m=0,amp;
 
-~level=180.collect{m=m+2;amp=m.reciprocal};
+~level=180.collect{m=m+1;amp=m.reciprocal};
 ~phase=180.collect{pi};
 signal=Signal.sineFill(1024,~level,~phase);
 
@@ -571,14 +571,15 @@ rel3=Cartesian(v3.b.round(0.0001),v3.c.round(0.0001),v3.d.round(0.0001)).phi.rou
 )
 /////////////////notes and durs
 (
-var dur=4,ph1,ph2,ph3,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0,pl6=0,sph1,sph2,sph3,n1,n2,n3,mult=12;
+var dur=4,ph1,ph2,ph3,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0,pl6=0,sph1,sph2,sph3,n1,n2,n3,mult=8;
 var mag1,mag2,mag3,rythm,index1,index2,index3,pl7=0,pl8=0,pl9=0,t1,t2,t3;
 
 ////L-system algae variable a,b rules:a=ab b=a , n3 for n0=a
-rythm=[1,1/2,1,1,1/2];
+rythm=[1/2,1/4,1/2,1/2,1/4,1/2,1/4,1/2,1/2,1/4,1/2,1/2,1/4,1/2,1/4,1/2,1/2,1/4,1/2,1/4,1/2];
 
 ~phase2 = (90*~time).collect{
-	ph1=~magx.[pl1]/(2.sqrt);
+	//ph1=~magx.[pl1]/(2.sqrt);
+	ph1=Cartesian(~magx.[pl1]/(2.sqrt),~magy.[pl1]/(2.sqrt),~magz.[pl1]/(2.sqrt)).rho/(2.sqrt);
 	index1=rythm.wrapAt(pl7);
 	pl7=pl7+1;
 	pl1=pl1+1;
@@ -588,7 +589,8 @@ rythm=[1,1/2,1,1,1/2];
 	};
 
 ~phase3 = (90*~time).collect{
-	ph2=~magy.[pl2]/(2.sqrt);
+	//ph2=~magy.[pl2]/(2.sqrt);
+	ph2=Cartesian(~magx.[pl2]/(2.sqrt),~magy.[pl2]/(2.sqrt),~magz.[pl2]/(2.sqrt)).rho/(2.sqrt);
 	index2=rythm.wrapAt(pl8);
 	pl8=pl8+1;
 	pl2=pl2+1;
@@ -597,7 +599,8 @@ rythm=[1,1/2,1,1,1/2];
 	};
 
 ~phase4 = (90*~time).collect{
-	ph3=~magz.[pl3]/(2.sqrt);
+	//ph3=~magz.[pl3]/(2.sqrt);
+	ph3=Cartesian(~magx.[pl3]/(2.sqrt),~magy.[pl3]/(2.sqrt),~magz.[pl3]/(2.sqrt)).rho/(2.sqrt);
 	index3=rythm.wrapAt(pl9);
 	pl9=pl9+1;
 	pl3=pl3+1;
@@ -641,9 +644,9 @@ var ang=0,level,levels,env,pl;
 (
 var ang=0,level,levels,env,pl;
 ~levels=90.collect{ level=exp(Complex(0,1)*ang).real; ang=ang+1.degrad;
-	levels=level.rrand(exp(Complex(0,1)*ang+((360/16)-((360/16)/1.6180339887499)).degrad).real);};
+	levels=level.rrand(exp(Complex(0,1)*ang+((360/64)-((360/64)/1.6180339887499)).degrad).real);};
 ~levels=[0]++~levels;
-//env=Env([0]++~levels,[8/180]);env.plot;
+//env=Env([0]++[0.01]++~levels,[8/360],[16,16.neg]);env.plot;
 )
 
 /////////////////////extra radomizer and reverser
@@ -680,20 +683,24 @@ var ang=0,level,levels,env,pl;
 ~magy_array=[~magy1,~magy2,~magy3,~magy4];
 ~magz_array=[~magz1,~magz2,~magz3,~magz4];
 )
+
+~magx_array.[0].[89]/(2.sqrt)
+////////////////////////////////////////////////////////piknotites bpf
+
 /////synths////f
 (
 (
 SynthDef.new(\ospace1, {
-	arg  n1=1,cutt=2200,decay=6,t=2,attack=0.02,az=0,el=0,mag=1;
-	var phase,octave=2,osc,sphere,mag_o,amp,ton,pl1=0,pl2=0;
-	var freq,m=3,bank1,bank2,pitch=1,fund=55, angle=360,rad,env;
+	arg  n1=1,reson=1,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
+	var phase,octave=2,osc,sphere,mag_o,amp,ton,pl1=0,pl2=0,rq=1,cutt;
+	var freq,m=1,bank1,bank2,pitch=1,fund=55, angle=360,rad,env;
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
 		Out.ar(pair[0], pair[1])}};
 var out = NamedControl.kr(\out, [0, 1, 2, 3]);  // multiple buses!
 
 bank1=4;
-	bank2=12;
+	bank2=8;
 ton=2.pow(n1/(2*6));
 freq=(fund*octave)*ton;
 
@@ -704,33 +711,143 @@ bank2.do{
 mag_o=Cartesian(~magx_array.[pl2].[pl1]/(2.sqrt),
 			    ~magy_array.[pl2].[pl1]/(2.sqrt),
 			    ~magz_array.[pl2].[pl1]/(2.sqrt)).rho/(2.sqrt);
+rq=mag_o.round(0.001);
 
-		amp=m.reciprocal*mag_o*ton.reciprocal;
+		phase=exp(Complex(0,1)*(mag_o.theta));
+		amp=m.reciprocal*ton.reciprocal*phase.rho;
 		pitch=freq*amp.reciprocal;
-		phase=exp(Complex(0,1)*(mag_o.linlin(0,2.sqrt,0,2pi))).theta;
 
 //sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az_x),Select.kr(pl,~el_x));
-sphere=Spherical(mag_o.round(0.00001),Select.kr(pl1,~az),Select.kr(pl1,~el));
+sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
 
-env=EnvGen.ar(Env(~levels,[decay/180]),doneAction:2);
+env=EnvGen.ar(Env(~levels,[decay/180],4.neg),doneAction:2);
+
+cutt=pitch;
 
 osc=VBAP.ar(4,
-LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:phase)),
+LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:phase.theta)),
 ~b.bufnum,
 Osc.ar(~t.bufnum,sphere.rho,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 Osc.ar(~t.bufnum,sphere.rho,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
 		);
+
 pl1=pl1+1;
 
-wrappedOut1.value(out,LeakDC.ar((osc)*env*0.1))
-//Out.ar(0,LeakDC.ar(LPF.ar(osc,2200),mul:env));
+		//	wrappedOut1.value(out,LeakDC.ar(BPF.ar((osc),cutt,rq,env)*0.5))
+			Out.ar(0,LeakDC.ar(LeakDC.ar(BPF.ar(osc,pitch,rq,env)*0.1)));
 
 		};
 		pl2=pl2+1;
-		m=m+2;
+		m=m+1;
 	};
 }).add;
 );
+(
+SynthDef.new(\ospace2, {
+	arg  n1=1,reson=1,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
+	var phase,octave=2,osc,sphere,mag_o,amp,ton,pl1=0,pl2=0,rq=1,cutt;
+	var freq,m=1,bank1,bank2,pitch=1,fund=55, angle=360,rad,env;
+	var wrappedOut1 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+var out = NamedControl.kr(\out, [0, 1, 2, 3]);  // multiple buses!
+
+bank1=4;
+	bank2=8;
+ton=2.pow(n1/(2*6));
+freq=(fund*octave)*ton;
+
+bank1.do{
+
+bank2.do{
+
+mag_o=Cartesian(~magx_array.[pl2].[pl1]/(2.sqrt),
+			    ~magy_array.[pl2].[pl1]/(2.sqrt),
+			    ~magz_array.[pl2].[pl1]/(2.sqrt)).rho/(2.sqrt);
+rq=mag_o.round(0.001);
+
+		phase=exp(Complex(0,1)*(mag_o.theta));
+		amp=m.reciprocal*ton.reciprocal*phase.rho;
+		pitch=freq*amp.reciprocal;
+
+//sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az_x),Select.kr(pl,~el_x));
+sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
+
+env=EnvGen.ar(Env(~levels,[decay/180],4.neg),doneAction:2);
+
+cutt=pitch;
+
+osc=VBAP.ar(4,
+LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:phase.theta)),
+~b.bufnum,
+Osc.ar(~t.bufnum,sphere.rho,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
+Osc.ar(~t.bufnum,sphere.rho,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
+		);
+
+pl1=pl1+1;
+
+		//	wrappedOut1.value(out,LeakDC.ar(BPF.ar((osc),cutt,rq,env)*0.5))
+			Out.ar(0,LeakDC.ar(LeakDC.ar(BPF.ar(osc,pitch,rq,env)*0.1)));
+
+		};
+		pl2=pl2+1;
+		m=m+1;
+	};
+}).add;
+);
+(
+SynthDef.new(\ospace3, {
+	arg  n1=1,reson=1,decay=6,t=2,attack=0.02,az=0,el=0,mag=1,pl=0;
+	var phase,octave=2,osc,sphere,mag_o,amp,ton,pl1=0,pl2=0,rq=1,cutt;
+	var freq,m=1,bank1,bank2,pitch=1,fund=55, angle=360,rad,env;
+	var wrappedOut1 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+var out = NamedControl.kr(\out, [0, 1, 2, 3]);  // multiple buses!
+
+bank1=4;
+	bank2=8;
+ton=2.pow(n1/(2*6));
+freq=(fund*octave)*ton;
+
+bank1.do{
+
+bank2.do{
+
+mag_o=Cartesian(~magx_array.[pl2].[pl1]/(2.sqrt),
+			    ~magy_array.[pl2].[pl1]/(2.sqrt),
+			    ~magz_array.[pl2].[pl1]/(2.sqrt)).rho/(2.sqrt);
+			rq=mag_o.round(0.001);
+
+			phase=exp(Complex(0,1)*(mag_o.theta));
+			amp=m.reciprocal*ton.reciprocal*phase.rho;
+		pitch=freq*amp.reciprocal;
+
+//sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az_x),Select.kr(pl,~el_x));
+sphere=Spherical(mag_o.round(0.00001),Select.kr(pl,~az),Select.kr(pl,~el));
+
+env=EnvGen.ar(Env(~levels,[decay/180],4.neg),doneAction:2);
+
+cutt=pitch;
+
+osc=VBAP.ar(4,
+LeakDC.ar(Osc.ar(~w.bufnum,pitch,mul:amp,phase:phase.theta)),
+~b.bufnum,
+Osc.ar(~t.bufnum,sphere.rho,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
+Osc.ar(~t.bufnum,sphere.rho,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
+		);
+
+pl1=pl1+1;
+
+		//	wrappedOut1.value(out,LeakDC.ar(BPF.ar((osc),cutt,rq,env)*0.5))
+			Out.ar(0,LeakDC.ar(LeakDC.ar(BPF.ar(osc,pitch,rq,env)*0.1)));
+
+		};
+		pl2=pl2+1;
+		m=m+1;
+	};
+}).add;
+)
 )
 
 
@@ -739,23 +856,69 @@ Scale.directory
 
 //////////pattern for mobius strib of sequential or parallel play of directions
 (
-(
-b=Pdef(\2, Pbind(\instrument, \ospace1,
+a=Pdef(\1, Pbind(\instrument, \ospace1,
 	\dur,Pseq(~phase2,1),
 \n1,PdegreeToKey(Pseq(~n2,inf),Scale.mixolydian),
-	//\cutt,Pbrown(220*2,220*6,55,inf),
+	\reson,Pbrown(0.1,0.2,0.01,inf),
 		\out,Pn(Pshuf([0, 1, 2, 3], 1), inf).clump(4).collect([_]),
-	//\pl1,Pseq(Array.series(90*~time,0,1),inf),
-	\decay,Pbrown(2,8,1,inf);
+	\pl,Pseq(Array.series(90*~time,0,1),inf),
+	\decay,Pbrown(4,8,1,inf);
 ));
-);
-
+b=Pdef(\2, Pbind(\instrument, \ospace2,
+	\dur,Pseq(~phase3,1),
+\n1,PdegreeToKey(Pseq(~n3,inf),Scale.mixolydian),
+		\reson,Pbrown(0.1,0.2,0.01,inf),
+		\out,Pn(Pshuf([0, 1, 2, 3], 1), inf).clump(4).collect([_]),
+	\pl,Pseq(Array.series(90*~time,0,1),inf),
+	\decay,Pbrown(4,8,1,inf);
+));
+c=Pdef(\3, Pbind(\instrument, \ospace3,
+	\dur,Pseq(~phase4,1),
+\n1,PdegreeToKey(Pseq(~n4,inf),Scale.mixolydian),
+		\reson,Pbrown(0.1,0.2,0.01,inf),
+		\out,Pn(Pshuf([0, 1, 2, 3], 1), inf).clump(4).collect([_]),
+	\pl,Pseq(Array.series(90*~time,0,1),inf),
+	\decay,Pbrown(4,8,1,inf);
+));
+d=Pdef(\4, Pbind(\instrument, \ospace1,
+	\dur,Pseq(~phase2.reverse,1),
+\n1,PdegreeToKey(Pseq(~n2.reverse,inf),Scale.mixolydian),
+		\reson,Pbrown(0.1,0.2,0.01,inf),
+		\out,Pn(Pshuf([0, 1, 2, 3], 1), inf).clump(4).collect([_]),
+	\pl,Pseq(Array.series(90*~time,0,1),inf),
+	\decay,Pbrown(4,8,1,inf);
+));
+e=Pdef(\5, Pbind(\instrument, \ospace2,
+	\dur,Pseq(~phase3.reverse,1),
+\n1,PdegreeToKey(Pseq(~n3.reverse,inf),Scale.mixolydian),
+		\reson,Pbrown(0.1,0.2,0.01,inf),
+		\out,Pn(Pshuf([0, 1, 2, 3], 1), inf).clump(4).collect([_]),
+	\pl,Pseq(Array.series(90*~time,0,1),inf),
+	\decay,Pbrown(4,8,1,inf);
+));
+f=Pdef(\6, Pbind(\instrument, \ospace3,
+	\dur,Pseq(~phase4.reverse,1),
+\n1,PdegreeToKey(Pseq(~n4.reverse,inf),Scale.mixolydian),
+	\reson,Pbrown(0.1,0.2,0.01,inf),
+		\out,Pn(Pshuf([0, 1, 2, 3], 1), inf).clump(4).collect([_]),
+	\pl,Pseq(Array.series(90*~time,0,1),inf),
+	\decay,Pbrown(4,8,1,inf);
+));
 )
 
+TempoClock.default.tempo_(0.25)
+a.play;
+//s.record(numChannels:4,duration:180)
 b.play;
-s.record(numChannels:4,duration:90)
-
-TempoClock.default.tempo_(120/120)
+//s.record(numChannels:4,duration:180)
+c.play;
+//s.record(numChannels:4,duration:180)
+d.play;
+//s.record(numChannels:4,duration:180)
+e.play;
+//s.record(numChannels:4,duration:180)
+f.play;
+s.record(numChannels:4,duration:180)
 
 );
 

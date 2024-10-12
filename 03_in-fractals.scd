@@ -1,7 +1,7 @@
 (
 s.options.numWireBufs = 1024*16;
 s.options.numOutputBusChannels=2;
-s.options.numInputBusChannels=0;
+s.options.numInputBusChannels=1;
 TempoClock.default.tempo_(120/120);
 s.options.memSize = 8192*64;
 //s.options.blockSize = 64/4;
@@ -122,7 +122,7 @@ var signal1,signal2,env1,env2,pl=89;
 var pos1,pos2,phase1,phase2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mg,ph1,ph2;
-var frames= 2048;
+var frames= 1024;
 
 	in1 = SoundIn.ar(0);
 	in2 =  SoundIn.ar(0);

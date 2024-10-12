@@ -26,7 +26,7 @@ env = Env(~levels,[1]);
 sig=env.asSignal(1024);
 wt = sig.asWavetable;
 ~b.loadCollection(wt);
-//sig.plot;
+sig.plot;
 )
 
 ////////fractal
@@ -119,9 +119,9 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 
 (
 {
-var signal1,signal2,env1,env2,pl=89,m=1,fund=55,freq;
-var pos1,pos2,phase1,phase2,ph1,ph2,mag;
-var chainx,chainy,amp;
+var signal1,signal2,env1,env2,pl=0,m=1,fund=55,freq;
+var pos1,pos2,phase1,phase2,ph1,ph2,mag,octave=4;
+var chainx,chainy,amp,rq=1;
 
 360.do{
 
@@ -133,19 +133,20 @@ var chainx,chainy,amp;
 
 		//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
+		mag=mag.round(0.00001);
 
-		ph1=exp(Complex(0,1)*mag.linlin(0,2.sqrt,0,2pi)*90.degrad).theta;
-		ph2=exp(Complex(0,1)*mag.linlin(0,2.sqrt,0,2pi)).theta;
+		ph1=exp(Complex(0,1)*mag.linlin(0,1,2pi.neg,2pi)*90.degrad).theta;
+		ph2=exp(Complex(0,1)*mag.linlin(0,1,2pi.neg,2pi)).theta;
 
-		amp=m.reciprocal*mag.linlin(0,2.sqrt,0,1);
+		amp=m.reciprocal;
 		freq=fund*amp.reciprocal;
 //env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 //env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-		signal1=BPF.ar(Osc.ar(~b.bufnum,freq,ph1,m.reciprocal),440,0.1);
-		signal2=BPF.ar(Osc.ar(~b.bufnum,freq,ph2,m.reciprocal),440,0.1);
+			signal1=BPF.ar(Osc.ar(~b.bufnum,freq,ph1,m.reciprocal),freq,rq);
+		signal2=BPF.ar(Osc.ar(~b.bufnum,freq,ph2,m.reciprocal),freq,rq);
 
-	m=m+2;
+	m=m+1;
 
 pl=pl+1;
 
